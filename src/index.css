@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Colors - Base Palette */
+  --color-bg: #f4f6fb;
+  --color-surface: #ffffff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  --color-text-placeholder: #94a3b8;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-border: #cbd5e1;
+  --color-border-hover: #94a3b8;
+  --color-required: #ef4444;
+
+  /* Colors - Demo Callout Component */
+  --color-demo-bg: #eff6ff;
+  --color-demo-bg-hover: #e0f2fe;
+  --color-demo-border: #dbeafe;
+  --color-demo-border-hover: #bfdbfe;
+  --color-demo-text: #1e40af;
+  --color-demo-code-bg: #dbeafe;
+  --color-demo-code-text: #1e3a8a;
+
+  /* Colors - Feedback Messages */
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-text: #991b1b;
+
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
+  --color-success-text: #166534;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 22px;
+  --font-size-xl: 34px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Spacing Scale */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 14px;
+  --spacing-2xl: 20px;
+  --spacing-3xl: 24px;
+  --spacing-4xl: 28px;
+  --spacing-5xl: 40px;
+
+  /* Layout & Sizing */
+  --content-max-width: 440px;
+  --input-height: 44px;
+  --button-height: 44px;
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Shadows & Focus Rings */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --focus-ring-input: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  --focus-ring-demo: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  --focus-ring-btn: 0 0 0 3px rgba(37, 99, 235, 0.35);
+
+  /* Motion & Transitions */
+  --transition-fast: all 0.15s ease-in-out;
+  --transition-normal: all 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
