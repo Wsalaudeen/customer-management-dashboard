@@ -1,43 +1,137 @@
-export default function Dashboard({ onLogout }) {
-  return (
-    <div style={{ padding: '40px 24px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'var(--font-sans)' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h1 style={{ fontSize: '28px', fontWeight: '700', color: 'var(--color-text-primary)' }}>Customer Dashboard</h1>
-          <p style={{ color: 'var(--color-text-muted)', marginTop: '4px' }}>Welcome back, Admin!</p>
-        </div>
-        <button
-          onClick={onLogout}
-          type="button"
-          style={{
-            padding: '10px 18px',
-            backgroundColor: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            fontWeight: '600',
-            color: 'var(--color-text-secondary)',
-            transition: 'var(--transition-fast)'
-          }}
-        >
-          Sign out
-        </button>
-      </header>
+import { useDashboard } from '../../hooks/useDashboard';
+import Sidebar from './Sidebar';
+import TopHeader from './TopHeader';
+import StatCardsGrid from './StatCardsGrid';
+import CustomerFilterToolbar from './CustomerFilterToolbar';
+import CustomerTable from './CustomerTable';
+import PaginationFooter from './PaginationFooter';
+import RegisterCustomerModal from './RegisterCustomerModal';
+import styles from './Dashboard.module.css';
 
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-        <div style={{ background: 'var(--color-surface)', padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <h3 style={{ fontSize: '14px', color: 'var(--color-text-muted)', marginBottom: '8px' }}>Total Customers</h3>
-          <p style={{ fontSize: '32px', fontWeight: '800', color: 'var(--color-primary)' }}>1,248</p>
-        </div>
-        <div style={{ background: 'var(--color-surface)', padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <h3 style={{ fontSize: '14px', color: 'var(--color-text-muted)', marginBottom: '8px' }}>Active Accounts</h3>
-          <p style={{ fontSize: '32px', fontWeight: '800', color: '#166534' }}>1,180</p>
-        </div>
-        <div style={{ background: 'var(--color-surface)', padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <h3 style={{ fontSize: '14px', color: 'var(--color-text-muted)', marginBottom: '8px' }}>Monthly Revenue</h3>
-          <p style={{ fontSize: '32px', fontWeight: '800', color: 'var(--color-text-primary)' }}>$48,250</p>
-        </div>
-      </section>
+export default function Dashboard({ onLogout }) {
+  const {
+    searchQuery,
+    statusTab,
+    industryFilter,
+    currentPage,
+    setCurrentPage,
+    isUserMenuOpen,
+    setIsUserMenuOpen,
+    isModalOpen,
+    setIsModalOpen,
+    sortConfig,
+    newCustomer,
+    setNewCustomer,
+    totalCustomers,
+    activeCustomers,
+    pendingCustomers,
+    inactiveCustomers,
+    totalResults,
+    totalPages,
+    currentSliceStart,
+    currentSliceEnd,
+    paginatedCustomers,
+    hasActiveFilters,
+    handleSearchChange,
+    handleStatusTabChange,
+    handleIndustryFilterChange,
+    handleClearFilters,
+    handleSort,
+    handleAddCustomerSubmit,
+    handleDeleteCustomer,
+  } = useDashboard();
+
+  return (
+    <div className={styles.dashboardLayout}>
+      <Sidebar
+        isUserMenuOpen={isUserMenuOpen}
+        onToggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
+      />
+
+      <main className={styles.mainCanvas} id="main-content">
+        <TopHeader
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+          isUserMenuOpen={isUserMenuOpen}
+          onToggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          onLogout={onLogout}
+        />
+
+        <section className={styles.content} aria-labelledby="dashboard-page-title">
+          <div className={styles.pageHeader}>
+            <div>
+              <h1 id="dashboard-page-title" className={styles.pageTitle}>
+                Customer Management
+              </h1>
+              <p className={styles.pageSubtitle}>Monitor and manage all business customer relationships.</p>
+            </div>
+
+            <button
+              className={styles.registerBtn}
+              onClick={() => setIsModalOpen(true)}
+              type="button"
+              aria-haspopup="dialog"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                aria-hidden="true"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Register Customer
+            </button>
+          </div>
+
+          <StatCardsGrid
+            totalCustomers={totalCustomers}
+            activeCustomers={activeCustomers}
+            pendingCustomers={pendingCustomers}
+            inactiveCustomers={inactiveCustomers}
+          />
+
+          <section className={styles.tableContainerCard} aria-label="Customer Data Records">
+            <CustomerFilterToolbar
+              statusTab={statusTab}
+              onStatusTabChange={handleStatusTabChange}
+              industryFilter={industryFilter}
+              onIndustryFilterChange={handleIndustryFilterChange}
+              hasActiveFilters={hasActiveFilters}
+              onClearFilters={handleClearFilters}
+              totalResults={totalResults}
+            />
+
+            <CustomerTable
+              customers={paginatedCustomers}
+              sortConfig={sortConfig}
+              onSort={handleSort}
+              onDeleteCustomer={handleDeleteCustomer}
+            />
+
+            <PaginationFooter
+              totalResults={totalResults}
+              currentSliceStart={currentSliceStart}
+              currentSliceEnd={currentSliceEnd}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </section>
+        </section>
+      </main>
+
+      <RegisterCustomerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        newCustomer={newCustomer}
+        onNewCustomerChange={setNewCustomer}
+        onSubmit={handleAddCustomerSubmit}
+      />
     </div>
   );
 }
