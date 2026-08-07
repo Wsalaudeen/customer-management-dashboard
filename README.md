@@ -416,3 +416,55 @@ Introduce a tool such as Playwright to validate complete workflows in a real bro
 * Drawer focus management.
 
 **Priority:** Medium
+
+---
+
+## 6. Performance
+
+### Lighthouse / Web Vitals
+
+The deployed dashboard was evaluated using Lighthouse, with the following observed results.
+
+![Lighthouse Audit Category Scores](docs/assets/lighthouse-scores.png)
+
+![Lighthouse Audit Web Vitals Metrics](docs/assets/lighthouse-metrics.png)
+
+| Metric | Measured | Target | Status |
+| :--- | ---: | ---: | :--- |
+| LCP | 0.7 s | ≤ 2.5s | Good |
+| FCP | 0.7 s | ≤ 1.8s | Good |
+
+#### Additional Lighthouse Metrics & Category Scores (Desktop)
+
+| Category / Metric | Score / Measurement | Status |
+| :--- | ---: | :--- |
+| Performance | 99 / 100 | Good |
+| Accessibility | 95 / 100 | Good |
+| Best Practices | 100 / 100 | Good |
+| SEO | 90 / 100 | Good |
+| Total Blocking Time (TBT) | 0 ms | Good |
+| Cumulative Layout Shift (CLS) | 0 | Good |
+| Speed Index | 0.8 s | Good |
+
+### Reference thresholds
+
+| Metric | Good | Needs Improvement | Poor |
+| :--- | ---: | ---: | ---: |
+| LCP (Largest Contentful Paint) | ≤ 2.5s | 2.5–4.0s | > 4.0s |
+| FCP (First Contentful Paint) | ≤ 1.8s | 1.8–3.0s | > 3.0s |
+
+### Performance considerations
+
+The following implementation choices contributed to the observed performance:
+
+* **Vite production build:** Optimized asset bundling and tree-shaking minimize JavaScript bundle size.
+* **Minimal runtime dependencies:** Built with React 19 and Vite 6 without heavy external UI or state framework overhead.
+* **Client-side rendering:** Well suited for an authenticated internal dashboard requiring instant interactive feedback.
+* **Component-level CSS Modules:** Scoped styling prevents CSS bloat and runtime CSS-in-JS evaluation overhead.
+* **Memoized data operations:** Derived operations (search filtering, sorting, pagination, and KPI stats calculations) are memoized via React `useMemo` to eliminate unnecessary computations.
+* **Skeleton loading states:** Dedicated skeleton components maintain visual layout stability and prevent Cumulative Layout Shift (CLS).
+* **Lightweight state architecture:** Managed through targeted React hooks without global state overhead.
+
+### Measurement context
+
+The measurements were taken against the live deployed version of the dashboard (`https://customer-management-dashboard-smoky-vercel.app/`) using PageSpeed Insights / Lighthouse 13.4.1 under the Desktop form factor on August 7, 2026.
