@@ -168,7 +168,7 @@ src/
 └── utils/              # Shared utilities and duplicate detection
 ```
 
-### Data Processing
+### Data Flow
 
 Dashboard data follows a predictable processing pipeline:
 
