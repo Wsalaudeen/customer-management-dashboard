@@ -1,198 +1,122 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { INITIAL_CUSTOMERS } from '../constants/mockCustomers';
+import { useCustomerFilter } from './useCustomerFilter';
+import { useCustomerSort } from './useCustomerSort';
+import { useCustomerPagination } from './useCustomerPagination';
+import { useCustomerMetrics } from './useCustomerMetrics';
+import { useCustomerForm } from './useCustomerForm';
 
-export function useDashboard() {
+/**
+ * Main dashboard orchestrator hook.
+ * Composes sub-hooks into a clean, predictable data pipeline:
+ * Raw Customers -> Filtered -> Sorted -> Paginated
+ */
+export function useDashboard({ initialLoading = false } = {}) {
+  // 1. Core State
+  const [isLoading, setIsLoading] = useState(initialLoading);
   const [customers, setCustomers] = useState(INITIAL_CUSTOMERS);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusTab, setStatusTab] = useState('All');
-  const [industryFilter, setIndustryFilter] = useState('All Industries');
-  const [currentPage, setCurrentPage] = useState(1);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'none' });
 
-  const [newCustomer, setNewCustomer] = useState({
-    businessName: '',
-    contactPerson: '',
-    type: 'Corporation',
-    industry: 'Telecommunications',
-    status: 'Active',
-    rmName: 'Ada',
-  });
+  // 2. Simulated loading delay on login
+  useEffect(() => {
+    if (initialLoading) {
+      const timer = setTimeout(() => setIsLoading(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [initialLoading]);
 
-  const pageSize = 10;
+  // 3. Instantiate Sub-Hooks
+  const filter = useCustomerFilter();
+  const sort = useCustomerSort();
+  const pagination = useCustomerPagination(10);
+  const metrics = useCustomerMetrics(customers);
 
-  // Stat metrics
-  const totalCustomers = customers.length;
-  const activeCustomers = customers.filter((c) => c.status === 'Active').length;
-  const pendingCustomers = customers.filter((c) => c.status === 'Pending').length;
-  const inactiveCustomers = customers.filter((c) => c.status === 'Inactive').length;
-
-  // Active filter indicator
-  const hasActiveFilters = statusTab !== 'All' || industryFilter !== 'All Industries' || searchQuery !== '';
-
-  // Filtered customer list
-  const filteredCustomers = useMemo(() => {
-    return customers.filter((item) => {
-      const matchesSearch =
-        item.businessName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.contactPerson.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesStatus = statusTab === 'All' || item.status === statusTab;
-      const matchesIndustry = industryFilter === 'All Industries' || item.industry === industryFilter;
-
-      return matchesSearch && matchesStatus && matchesIndustry;
-    });
-  }, [customers, searchQuery, statusTab, industryFilter]);
-
-  const parseCreatedDate = (dateStr) => {
-    if (!dateStr) return 0;
-    if (dateStr === 'Today') return Date.now();
-    const timestamp = Date.parse(dateStr);
-    return isNaN(timestamp) ? 0 : timestamp;
+  // Handler: Add customer and jump to page 1
+  const handleAddCustomer = (record) => {
+    setCustomers((prev) => [record, ...prev]);
+    pagination.setCurrentPage(1);
   };
 
-  // Sorted customer list
-  const sortedCustomers = useMemo(() => {
-    if (!sortConfig.key || sortConfig.direction === 'none') {
-      return filteredCustomers;
-    }
+  // Handler: Delete customer by ID
+  const handleDeleteCustomer = (id) => {
+    setCustomers((prev) => prev.filter((item) => item.id !== id));
+  };
 
-    return [...filteredCustomers].sort((a, b) => {
-      let aVal = a[sortConfig.key];
-      let bVal = b[sortConfig.key];
+  const form = useCustomerForm(handleAddCustomer, handleDeleteCustomer);
 
-      if (sortConfig.key === 'rm') {
-        aVal = a.rm.name.toLowerCase();
-        bVal = b.rm.name.toLowerCase();
-      } else if (sortConfig.key === 'createdDate') {
-        aVal = parseCreatedDate(a.createdDate);
-        bVal = parseCreatedDate(b.createdDate);
-      } else if (typeof aVal === 'string') {
-        aVal = aVal.toLowerCase();
-        bVal = bVal.toLowerCase();
-      }
+  // 4. Data Processing Pipeline
+  const filteredCustomers = filter.filterList(customers);
+  const sortedCustomers = sort.sortList(filteredCustomers);
+  const paginationData = pagination.paginateList(sortedCustomers);
 
-      if (aVal < bVal) return sortConfig.direction === 'ascending' ? -1 : 1;
-      if (aVal > bVal) return sortConfig.direction === 'ascending' ? 1 : -1;
-      return 0;
-    });
-  }, [filteredCustomers, sortConfig]);
-
-  // Pagination calculations
-  const totalResults = sortedCustomers.length;
-  const totalPages = Math.ceil(totalResults / pageSize) || 1;
-  const currentSliceStart = (currentPage - 1) * pageSize;
-  const currentSliceEnd = Math.min(currentSliceStart + pageSize, totalResults);
-  const paginatedCustomers = sortedCustomers.slice(currentSliceStart, currentSliceEnd);
-
+  // Helper wrappers that change filter & reset pagination to page 1
   const handleSearchChange = (query) => {
-    setSearchQuery(query);
-    setCurrentPage(1);
+    filter.setSearchQuery(query);
+    pagination.setCurrentPage(1);
   };
 
   const handleStatusTabChange = (tab) => {
-    setStatusTab(tab);
-    setCurrentPage(1);
+    filter.setStatusTab(tab);
+    pagination.setCurrentPage(1);
   };
 
   const handleIndustryFilterChange = (industry) => {
-    setIndustryFilter(industry);
-    setCurrentPage(1);
+    filter.setIndustryFilter(industry);
+    pagination.setCurrentPage(1);
   };
 
   const handleClearFilters = () => {
-    setStatusTab('All');
-    setIndustryFilter('All Industries');
-    setSearchQuery('');
-    setCurrentPage(1);
+    filter.resetFilters();
+    pagination.setCurrentPage(1);
   };
 
-  const handleSort = (key) => {
-    setSortConfig((prev) => {
-      if (prev.key !== key) {
-        return { key, direction: 'ascending' };
-      }
-      if (prev.direction === 'ascending') {
-        return { key, direction: 'descending' };
-      }
-      return { key: null, direction: 'none' };
-    });
-    setCurrentPage(1);
-  };
-
-  const handleAddCustomerSubmit = (e) => {
-    e.preventDefault();
-    if (!newCustomer.businessName.trim() || !newCustomer.contactPerson.trim()) return;
-
-    const initialsMap = {
-      Ada: 'AN',
-      John: 'JA',
-      James: 'JM',
-      Kemi: 'KA',
-      Sarah: 'SO',
-    };
-
-    const newRecord = {
-      id: String(Date.now()),
-      businessName: newCustomer.businessName.trim(),
-      contactPerson: newCustomer.contactPerson.trim(),
-      type: newCustomer.type,
-      industry: newCustomer.industry,
-      rm: {
-        name: newCustomer.rmName,
-        initials: initialsMap[newCustomer.rmName] || 'AU',
-      },
-      status: newCustomer.status,
-      createdDate: 'Today',
-    };
-
-    setCustomers([newRecord, ...customers]);
-    setIsModalOpen(false);
-    setNewCustomer({
-      businessName: '',
-      contactPerson: '',
-      type: 'Corporation',
-      industry: 'Telecommunications',
-      status: 'Active',
-      rmName: 'Ada',
-    });
-  };
-
-  const handleDeleteCustomer = (id) => {
-    setCustomers(customers.filter((c) => c.id !== id));
-  };
-
+  // 5. Return Clean Public Contract for Dashboard UI
   return {
+    // Loading State
+    isLoading,
+    setIsLoading,
+
+    // Raw Customers State
     customers,
-    searchQuery,
-    statusTab,
-    industryFilter,
-    currentPage,
-    setCurrentPage,
-    isUserMenuOpen,
-    setIsUserMenuOpen,
-    isModalOpen,
-    setIsModalOpen,
-    sortConfig,
-    newCustomer,
-    setNewCustomer,
-    totalCustomers,
-    activeCustomers,
-    pendingCustomers,
-    inactiveCustomers,
-    totalResults,
-    totalPages,
-    currentSliceStart,
-    currentSliceEnd,
-    paginatedCustomers,
-    hasActiveFilters,
+    setCustomers,
+
+    // Filter API
+    searchQuery: filter.searchQuery,
+    statusTab: filter.statusTab,
+    industryFilter: filter.industryFilter,
+    hasActiveFilters: filter.hasActiveFilters,
     handleSearchChange,
     handleStatusTabChange,
     handleIndustryFilterChange,
     handleClearFilters,
-    handleSort,
-    handleAddCustomerSubmit,
-    handleDeleteCustomer,
+
+    // Sort API
+    sortConfig: sort.sortConfig,
+    handleSort: sort.toggleSort,
+
+    // Pagination API
+    currentPage: paginationData.validPage,
+    setCurrentPage: pagination.setCurrentPage,
+    totalResults: paginationData.totalResults,
+    totalPages: paginationData.totalPages,
+    currentSliceStart: paginationData.currentSliceStart,
+    currentSliceEnd: paginationData.currentSliceEnd,
+    paginatedCustomers: paginationData.paginatedItems,
+
+    // Metrics Summary API
+    totalCustomers: metrics.totalCustomers,
+    activeCustomers: metrics.activeCustomers,
+    pendingCustomers: metrics.pendingCustomers,
+    inactiveCustomers: metrics.inactiveCustomers,
+
+    // UI Dropdown & Modal API
+    isUserMenuOpen,
+    setIsUserMenuOpen,
+    isModalOpen: form.isModalOpen,
+    setIsModalOpen: form.setIsModalOpen,
+    newCustomer: form.newCustomer,
+    setNewCustomer: form.setNewCustomer,
+    handleAddCustomerSubmit: form.handleSubmit,
+    handleDeleteCustomer: form.handleDelete,
   };
 }

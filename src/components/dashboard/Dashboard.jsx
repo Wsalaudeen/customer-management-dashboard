@@ -1,136 +1,55 @@
 import { useDashboard } from '../../hooks/useDashboard';
-import Sidebar from './Sidebar';
-import TopHeader from './TopHeader';
-import StatCardsGrid from './StatCardsGrid';
-import CustomerFilterToolbar from './CustomerFilterToolbar';
-import CustomerTable from './CustomerTable';
-import PaginationFooter from './PaginationFooter';
-import RegisterCustomerModal from './RegisterCustomerModal';
+import Sidebar from '../sidebar/Sidebar';
+import TopHeader from '../header/TopHeader';
+import PageHeader from '../header/PageHeader';
+import StatCardsGrid from '../stats/StatCardsGrid';
+import CustomerSection from '../customer/CustomerSection';
+import RegisterCustomerModal from '../modal/RegisterCustomerModal';
+import DashboardSkeleton from '../ui/DashboardSkeleton';
 import styles from './Dashboard.module.css';
 
-export default function Dashboard({ onLogout }) {
-  const {
-    searchQuery,
-    statusTab,
-    industryFilter,
-    currentPage,
-    setCurrentPage,
-    isUserMenuOpen,
-    setIsUserMenuOpen,
-    isModalOpen,
-    setIsModalOpen,
-    sortConfig,
-    newCustomer,
-    setNewCustomer,
-    totalCustomers,
-    activeCustomers,
-    pendingCustomers,
-    inactiveCustomers,
-    totalResults,
-    totalPages,
-    currentSliceStart,
-    currentSliceEnd,
-    paginatedCustomers,
-    hasActiveFilters,
-    handleSearchChange,
-    handleStatusTabChange,
-    handleIndustryFilterChange,
-    handleClearFilters,
-    handleSort,
-    handleAddCustomerSubmit,
-    handleDeleteCustomer,
-  } = useDashboard();
+export default function Dashboard({ onLogout, initialLoading = false }) {
+  const dashboard = useDashboard({ initialLoading });
 
   return (
     <div className={styles.dashboardLayout}>
-      <Sidebar
-        isUserMenuOpen={isUserMenuOpen}
-        onToggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
-      />
+      <Sidebar />
 
       <main className={styles.mainCanvas} id="main-content">
         <TopHeader
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          isUserMenuOpen={isUserMenuOpen}
-          onToggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          searchQuery={dashboard.searchQuery}
+          onSearchChange={dashboard.handleSearchChange}
+          isUserMenuOpen={dashboard.isUserMenuOpen}
+          onToggleUserMenu={() => dashboard.setIsUserMenuOpen(!dashboard.isUserMenuOpen)}
           onLogout={onLogout}
         />
 
         <section className={styles.content} aria-labelledby="dashboard-page-title">
-          <div className={styles.pageHeader}>
-            <div>
-              <h1 id="dashboard-page-title" className={styles.pageTitle}>
-                Customer Management
-              </h1>
-              <p className={styles.pageSubtitle}>Monitor and manage all business customer relationships.</p>
-            </div>
+          <PageHeader onOpenModal={() => dashboard.setIsModalOpen(true)} />
 
-            <button
-              className={styles.registerBtn}
-              onClick={() => setIsModalOpen(true)}
-              type="button"
-              aria-haspopup="dialog"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                aria-hidden="true"
-              >
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Register Customer
-            </button>
-          </div>
+          {dashboard.isLoading ? (
+            <DashboardSkeleton />
+          ) : (
+            <>
+              <StatCardsGrid
+                totalCustomers={dashboard.totalCustomers}
+                activeCustomers={dashboard.activeCustomers}
+                pendingCustomers={dashboard.pendingCustomers}
+                inactiveCustomers={dashboard.inactiveCustomers}
+              />
 
-          <StatCardsGrid
-            totalCustomers={totalCustomers}
-            activeCustomers={activeCustomers}
-            pendingCustomers={pendingCustomers}
-            inactiveCustomers={inactiveCustomers}
-          />
-
-          <section className={styles.tableContainerCard} aria-label="Customer Data Records">
-            <CustomerFilterToolbar
-              statusTab={statusTab}
-              onStatusTabChange={handleStatusTabChange}
-              industryFilter={industryFilter}
-              onIndustryFilterChange={handleIndustryFilterChange}
-              hasActiveFilters={hasActiveFilters}
-              onClearFilters={handleClearFilters}
-              totalResults={totalResults}
-            />
-
-            <CustomerTable
-              customers={paginatedCustomers}
-              sortConfig={sortConfig}
-              onSort={handleSort}
-              onDeleteCustomer={handleDeleteCustomer}
-            />
-
-            <PaginationFooter
-              totalResults={totalResults}
-              currentSliceStart={currentSliceStart}
-              currentSliceEnd={currentSliceEnd}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-          </section>
+              <CustomerSection dashboard={dashboard} />
+            </>
+          )}
         </section>
       </main>
 
       <RegisterCustomerModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        newCustomer={newCustomer}
-        onNewCustomerChange={setNewCustomer}
-        onSubmit={handleAddCustomerSubmit}
+        isOpen={dashboard.isModalOpen}
+        onClose={() => dashboard.setIsModalOpen(false)}
+        newCustomer={dashboard.newCustomer}
+        onNewCustomerChange={dashboard.setNewCustomer}
+        onSubmit={dashboard.handleAddCustomerSubmit}
       />
     </div>
   );

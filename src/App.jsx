@@ -6,7 +6,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   if (isAuthenticated) {
-    return <Dashboard onLogout={() => setIsAuthenticated(false)} />;
+    return <Dashboard onLogout={() => setIsAuthenticated(false)} initialLoading={true} />;
   }
 
   return <Login onLoginSuccess={() => setIsAuthenticated(true)} />;

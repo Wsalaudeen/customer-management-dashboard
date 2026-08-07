@@ -1,0 +1,91 @@
+/* --- Stats Grid Component Styles --- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.statTitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.statTrend {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.trendUp {
+  color: #16a34a;
+}
+
+.trendAmber {
+  color: #d97706;
+}
+
+.trendNeutral {
+  color: #94a3b8;
+}
+
+.statIconWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconBlue {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.iconGreen {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+.iconAmber {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.iconGray {
+  background-color: #f8fafc;
+  color: #64748b;
+}
+
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

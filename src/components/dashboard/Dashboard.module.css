@@ -2,21 +2,21 @@
 .dashboardLayout {
   display: flex;
   min-height: 100vh;
-  background-color: #f4f6fa;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #1e293b;
+  background-color: var(--color-bg-alt);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
 }
 
 /* --- Sidebar --- */
 .sidebar {
-  width: 240px;
-  background-color: #0d1727;
-  color: #94a3b8;
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex-shrink: 0;
-  border-right: 1px solid #1e293b;
+  border-right: 1px solid var(--sidebar-border);
 }
 
 .sidebarTop {
@@ -365,36 +365,36 @@
 }
 
 .pageTitle {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f172a;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
 }
 
 .pageSubtitle {
-  font-size: 13px;
-  color: #64748b;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   margin-top: 4px;
 }
 
 .registerBtn {
-  background-color: #2563eb;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 13px;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
   padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-  transition: all 0.15s ease;
+  box-shadow: var(--btn-shadow);
+  transition: var(--transition-fast);
 }
 
 .registerBtn:hover {
-  background-color: #1d4ed8;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--btn-shadow-hover);
 }
 
 /* --- Stats Grid --- */
@@ -406,9 +406,9 @@
 }
 
 .statCard {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -416,8 +416,8 @@
 }
 
 .statTitle {
-  font-size: 13px;
-  color: #64748b;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
   font-weight: 500;
   margin-bottom: 12px;
 }
@@ -450,7 +450,7 @@
 .statIconWrapper {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,7 +481,7 @@
 .tableContainerCard {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -938,4 +938,26 @@
   .statsGrid {
     grid-template-columns: 1fr;
   }
+}
+
+/* --- Shimmer Skeleton Loading State --- */
+@keyframes shimmerPulse {
+  0% {
+    background-position: -250px 0;
+  }
+  100% {
+    background-position: calc(250px + 100%) 0;
+  }
+}
+
+.skeletonContainer {
+  width: 100%;
+}
+
+.skeletonBase {
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-size: 250px 100%;
+  animation: shimmerPulse 1.5s infinite ease-in-out;
+  border-radius: 6px;
+  display: inline-block;
 }

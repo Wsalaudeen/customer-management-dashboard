@@ -1,4 +1,4 @@
-import styles from './Dashboard.module.css';
+import styles from '../dashboard/Dashboard.module.css';
 
 export default function PaginationFooter({
   totalResults,

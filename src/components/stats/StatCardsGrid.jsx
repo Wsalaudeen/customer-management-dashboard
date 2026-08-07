@@ -1,4 +1,4 @@
-import styles from './Dashboard.module.css';
+import styles from './StatCardsGrid.module.css';
 
 export default function StatCardsGrid({
   totalCustomers,

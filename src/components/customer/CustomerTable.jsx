@@ -1,4 +1,4 @@
-import styles from './Dashboard.module.css';
+import styles from '../dashboard/Dashboard.module.css';
 
 // SVG Sort Icons
 function ArrowUpIcon({ className }) {

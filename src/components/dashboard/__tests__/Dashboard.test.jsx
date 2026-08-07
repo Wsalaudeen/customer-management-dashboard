@@ -102,4 +102,11 @@ describe('Dashboard Component', () => {
 
     expect(handleLogout).toHaveBeenCalledTimes(1);
   });
+
+  it('renders skeleton loading state initially when initialLoading is true', () => {
+    render(<Dashboard onLogout={vi.fn()} initialLoading={true} />);
+
+    expect(screen.getByLabelText(/Loading dashboard content/i)).toBeInTheDocument();
+    expect(screen.queryByText('Total Customers')).not.toBeInTheDocument();
+  });
 });
