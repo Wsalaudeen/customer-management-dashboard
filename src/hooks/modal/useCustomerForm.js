@@ -13,9 +13,6 @@ const INITIAL_FORM_STATE = {
   rmName: 'Ada',
 };
 
-/**
- * Custom hook to manage modal visibility and new customer registration form state.
- */
 export function useCustomerForm(onAddCustomer, onDeleteCustomer, existingCustomers = []) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newCustomer, setNewCustomer] = useState(INITIAL_FORM_STATE);
@@ -62,7 +59,6 @@ export function useCustomerForm(onAddCustomer, onDeleteCustomer, existingCustome
 
     if (!name || !contact) return;
 
-    // Check for duplicates before proceeding
     const duplicateCheck = findDuplicateCustomer(newCustomer, existingCustomers);
     if (duplicateCheck.isDuplicate) {
       setDuplicateError({

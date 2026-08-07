@@ -1,9 +1,6 @@
 import { useState, useRef } from 'react';
 import { DEMO_CREDENTIALS, AUTH_MESSAGES, AUTH_CONFIG } from '../../constants/auth';
 
-/**
- * Custom hook to manage Login form state, input validation, autofill, and submission.
- */
 export function useLoginForm(onLoginSuccess) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -16,18 +16,14 @@ describe('Login Component', () => {
   it('renders all essential Auth UI elements', () => {
     render(<Login onLoginSuccess={vi.fn()} />);
 
-    // Check heading and subtitle
     expect(screen.getByRole('heading', { name: AUTH_CONFIG.HEADING })).toBeInTheDocument();
     expect(screen.getByText(AUTH_CONFIG.SUBTITLE)).toBeInTheDocument();
 
-    // Check form fields
     expect(screen.getByLabelText(/Corporate Email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/^Password/i)).toBeInTheDocument();
 
-    // Check submit button
     expect(screen.getByRole('button', { name: /Sign in/i })).toBeInTheDocument();
 
-    // Check demo credentials callout
     expect(screen.getByText(DEMO_CREDENTIALS.email)).toBeInTheDocument();
   });
 
@@ -88,7 +84,6 @@ describe('Login Component', () => {
       fireEvent.click(submitBtn);
     });
 
-    // Fast-forward simulated network delay inside act
     act(() => {
       vi.advanceTimersByTime(AUTH_CONFIG.SIMULATED_DELAY_MS);
     });
@@ -110,15 +105,12 @@ describe('Login Component', () => {
       fireEvent.click(submitBtn);
     });
 
-    // Advance simulated delay for authentication API
     act(() => {
       vi.advanceTimersByTime(AUTH_CONFIG.SIMULATED_DELAY_MS);
     });
 
-    // Success alert should appear
     expect(screen.getByText(AUTH_MESSAGES.SUCCESS)).toBeInTheDocument();
 
-    // Advance redirect timer (800ms)
     act(() => {
       vi.advanceTimersByTime(800);
     });
@@ -139,7 +131,6 @@ describe('Login Component', () => {
       fireEvent.click(submitBtn);
     });
 
-    // Submit button should be disabled while loading
     expect(submitBtn).toBeDisabled();
   });
 });

@@ -11,23 +11,19 @@ describe('RegisterCustomerModal Component', () => {
   it('renders drawer with dialog role, title, subtitle, form sections, and buttons when isOpen is true', () => {
     render(<RegisterCustomerModal isOpen={true} onClose={vi.fn()} />);
 
-    // Dialog & Accessibility
     const dialog = screen.getByRole('dialog');
     expect(dialog).toBeInTheDocument();
     expect(dialog).toHaveAttribute('aria-modal', 'true');
 
-    // Title and Subtitle
     expect(screen.getByRole('heading', { name: 'Register Customer' })).toBeInTheDocument();
     expect(
       screen.getByText('Complete the form to register a new business customer.')
     ).toBeInTheDocument();
 
-    // Form Sections
     expect(screen.getByText('Business Information')).toBeInTheDocument();
     expect(screen.getByText('Contact Information')).toBeInTheDocument();
     expect(screen.getByText('Account Settings')).toBeInTheDocument();
 
-    // Inputs
     expect(screen.getByLabelText(/Business Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Business Type/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Industry/i)).toBeInTheDocument();
@@ -37,7 +33,6 @@ describe('RegisterCustomerModal Component', () => {
     expect(screen.getByLabelText(/Status/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Notes/i)).toBeInTheDocument();
 
-    // Action Buttons
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Register Customer' })).toBeInTheDocument();
   });
@@ -46,17 +41,14 @@ describe('RegisterCustomerModal Component', () => {
     const handleClose = vi.fn();
     render(<RegisterCustomerModal isOpen={true} onClose={handleClose} />);
 
-    // Close button click
     const closeIconBtn = screen.getByRole('button', { name: /Close modal/i });
     fireEvent.click(closeIconBtn);
     expect(handleClose).toHaveBeenCalledTimes(1);
 
-    // Cancel button click
     const cancelBtn = screen.getByRole('button', { name: 'Cancel' });
     fireEvent.click(cancelBtn);
     expect(handleClose).toHaveBeenCalledTimes(2);
 
-    // Escape key press
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(handleClose).toHaveBeenCalledTimes(3);
   });

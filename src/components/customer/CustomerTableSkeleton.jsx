@@ -1,10 +1,6 @@
 import Skeleton from '../ui/Skeleton';
 import styles from '../dashboard/Dashboard.module.css';
 
-/**
- * CustomerTableSkeleton
- * Renders shimmering loading placeholders for the customer table and filter toolbar.
- */
 export default function CustomerTableSkeleton({ rows = 6 }) {
   return (
     <div className={styles.tableContainerCard}>

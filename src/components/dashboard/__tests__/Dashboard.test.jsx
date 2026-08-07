@@ -6,13 +6,9 @@ describe('Dashboard Component', () => {
   it('renders dashboard title, sidebar, and stat cards', () => {
     render(<Dashboard onLogout={vi.fn()} />);
 
-    // Check heading
     expect(screen.getByRole('heading', { name: /Customer Management/i })).toBeInTheDocument();
-
-    // Check sidebar brand
     expect(screen.getByText('Peerless')).toBeInTheDocument();
 
-    // Check stat card labels
     expect(screen.getByText('Total Customers')).toBeInTheDocument();
     expect(screen.getByText('Active Customers')).toBeInTheDocument();
     expect(screen.getByText('Pending Verification')).toBeInTheDocument();
@@ -22,9 +18,7 @@ describe('Dashboard Component', () => {
   it('renders initial paginated list of customers (1-10)', () => {
     render(<Dashboard onLogout={vi.fn()} />);
 
-    // First customer on page 1
     expect(screen.getByText('Pinnacle Telecom Solutions')).toBeInTheDocument();
-    // Pagination footer text
     expect(screen.getByText(/Showing 1-10 of 15/i)).toBeInTheDocument();
   });
 
@@ -61,21 +55,16 @@ describe('Dashboard Component', () => {
   it('shows clear filters button when filter is active and resets back to All on click', () => {
     render(<Dashboard onLogout={vi.fn()} />);
 
-    // Initially clear filters button is not present
     expect(screen.queryByRole('button', { name: /Clear filters/i })).not.toBeInTheDocument();
 
-    // Click Pending tab
     const pendingTab = screen.getByRole('button', { name: 'Pending' });
     fireEvent.click(pendingTab);
 
-    // Clear filters button should appear
     const clearBtn = screen.getByRole('button', { name: /Clear.*filters/i });
     expect(clearBtn).toBeInTheDocument();
 
-    // Click Clear filters
     fireEvent.click(clearBtn);
 
-    // Clear filters button disappears and All tab is active
     expect(screen.queryByRole('button', { name: /Clear.*filters/i })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true');
   });

@@ -9,14 +9,33 @@ This application is built with **React 19** and **Vite 6**.
 * Node.js `v18.0.0` or later
 * npm `v9.0.0` or later
 
-### Installation
+### Installation & Quick Start
 
-Clone the repository and install the project dependencies:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Wsalaudeen/customer-management-dashboard.git
+   cd customer-management-dashboard/dashboard-frontend
+   ```
 
-```bash
-cd dashboard-frontend
-npm install
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
+
+4. **Run the test suite:**
+   ```bash
+   npm run test
+   ```
+   To run tests with code coverage:
+   ```bash
+   npm run test:coverage
+   ```
 
 ### Environment Variables
 

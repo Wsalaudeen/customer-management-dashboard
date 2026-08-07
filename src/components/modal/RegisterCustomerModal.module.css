@@ -1,4 +1,3 @@
-/* Backdrop Overlay */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -17,7 +16,6 @@
   visibility: visible;
 }
 
-/* Right-Side Slide-In Drawer Panel */
 .drawer {
   position: fixed;
   top: 0;
@@ -38,7 +36,6 @@
   transform: translateX(0);
 }
 
-/* Header Section */
 .header {
   padding: 20px 24px;
   border-bottom: 1px solid #e2e8f0;
@@ -98,7 +95,6 @@
   outline-offset: 2px;
 }
 
-/* Form Shell & Scrollable Content */
 .form {
   display: flex;
   flex-direction: column;
@@ -116,7 +112,6 @@
   gap: 20px;
 }
 
-/* Form Sections & Field Layouts */
 .section {
   display: flex;
   flex-direction: column;
@@ -244,7 +239,6 @@
   font-weight: 400;
 }
 
-/* Footer Section */
 .footer {
   padding: 16px 24px;
   border-top: 1px solid #e2e8f0;
@@ -296,7 +290,6 @@
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.22);
 }
 
-/* Modal Success View Styling */
 .successContainer {
   padding: 32px 24px;
   display: flex;
@@ -427,7 +420,6 @@
   outline-offset: 2px;
 }
 
-/* Duplicate Warning Alert Banner */
 .alertBanner {
   background-color: #fffbeb;
   border: 1px solid #fde68a;
@@ -474,7 +466,6 @@
   margin-top: 2px;
 }
 
-/* Responsive styles */
 @media (max-width: 640px) {
   .drawer {
     max-width: 100%;

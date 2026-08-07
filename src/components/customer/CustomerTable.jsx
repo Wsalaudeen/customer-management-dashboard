@@ -1,6 +1,5 @@
 import styles from '../dashboard/Dashboard.module.css';
 
-// SVG Sort Icons
 function ArrowUpIcon({ className }) {
   return (
     <svg

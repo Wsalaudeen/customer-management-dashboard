@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-/**
- * Custom hook to manage modal drawer lifecycle, entry/exit animations,
- * background scroll locking, and keyboard accessibility (Escape key & Focus Trap).
- */
 export function useModalDrawer(isOpen, onClose) {
   const [mounted, setMounted] = useState(isOpen);
   const [isAnimated, setIsAnimated] = useState(isOpen);
@@ -12,7 +8,6 @@ export function useModalDrawer(isOpen, onClose) {
   const firstInputRef = useRef(null);
   const previousActiveElement = useRef(null);
 
-  // Drawer entrance/exit animations, body scroll lock, focus restoration
   useEffect(() => {
     if (isOpen) {
       setMounted(true);
@@ -40,7 +35,6 @@ export function useModalDrawer(isOpen, onClose) {
     }
   }, [isOpen]);
 
-  // Keyboard accessibility: Escape key to close & Focus Trap
   useEffect(() => {
     if (!isOpen) return;
 

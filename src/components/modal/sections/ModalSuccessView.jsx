@@ -35,7 +35,6 @@ export default function ModalSuccessView({
           has been added to the customer registry and is now visible in the dashboard.
         </p>
 
-        {/* 2x2 Details Summary Description List */}
         <dl className={styles.summaryCard}>
           <div className={styles.summaryGroup}>
             <dt className={styles.summaryLabel}>ID</dt>
@@ -55,7 +54,6 @@ export default function ModalSuccessView({
           </div>
         </dl>
 
-        {/* Action Buttons Footer */}
         <footer className={styles.successActions}>
           <button
             type="button"

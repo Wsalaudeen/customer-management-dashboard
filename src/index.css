@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Colors - Base Palette */
   --color-bg: #f4f6fb;
   --color-bg-alt: #f4f6fa;
   --color-surface: #ffffff;
@@ -17,13 +16,11 @@
   --color-border-hover: #94a3b8;
   --color-required: #ef4444;
 
-  /* Sidebar Theme Tokens */
   --sidebar-width: 240px;
   --sidebar-bg: #0d1727;
   --sidebar-text: #94a3b8;
   --sidebar-border: #1e293b;
 
-  /* Colors - Demo Callout Component */
   --color-demo-bg: #eff6ff;
   --color-demo-bg-hover: #e0f2fe;
   --color-demo-border: #dbeafe;
@@ -32,7 +29,6 @@
   --color-demo-code-bg: #dbeafe;
   --color-demo-code-text: #1e3a8a;
 
-  /* Colors - Feedback Messages */
   --color-error-bg: #fef2f2;
   --color-error-border: #fecaca;
   --color-error-text: #991b1b;
@@ -41,7 +37,6 @@
   --color-success-border: #bbf7d0;
   --color-success-text: #166534;
 
-  /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   
@@ -57,7 +52,6 @@
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
 
-  /* Spacing Scale */
   --spacing-2xs: 2px;
   --spacing-xs: 4px;
   --spacing-sm: 6px;
@@ -69,18 +63,15 @@
   --spacing-4xl: 28px;
   --spacing-5xl: 40px;
 
-  /* Layout & Sizing */
   --content-max-width: 440px;
   --input-height: 44px;
   --button-height: 44px;
 
-  /* Border Radii */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 10px;
   --radius-xl: 12px;
 
-  /* Shadows & Focus Rings */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --btn-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);
   --btn-shadow-hover: 0 2px 6px rgba(37, 99, 235, 0.22);
@@ -88,7 +79,6 @@
   --focus-ring-demo: 0 0 0 3px rgba(37, 99, 235, 0.2);
   --focus-ring-btn: 0 0 0 3px rgba(37, 99, 235, 0.35);
 
-  /* Motion & Transitions */
   --transition-fast: all 0.15s ease-in-out;
   --transition-normal: all 0.2s ease;
 }
@@ -110,7 +100,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Accessibility - Screen Reader Only utility */
 .sr-only {
   position: absolute;
   width: 1px;

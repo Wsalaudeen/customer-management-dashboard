@@ -1,6 +1,6 @@
 .authWrapper {
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -31,7 +31,6 @@
   }
 }
 
-/* Brand Header */
 .brandHeader {
   display: flex;
   align-items: center;
@@ -46,7 +45,6 @@
   line-height: 1.1;
 }
 
-/* Title & Subtitle */
 .title {
   font-size: clamp(18px, 4vw, var(--font-size-lg));
   font-weight: var(--font-weight-semibold);
@@ -63,7 +61,6 @@
   line-height: 1.5;
 }
 
-/* Demo Callout Box */
 .demoBox {
   width: 100%;
   display: flex;
@@ -119,7 +116,6 @@
   word-break: break-all;
 }
 
-/* Feedback Messages */
 .errorMessage {
   background-color: var(--color-error-bg);
   border: 1px solid var(--color-error-border);
@@ -142,7 +138,6 @@
   word-break: break-word;
 }
 
-/* Form Styles */
 .form {
   display: flex;
   flex-direction: column;
@@ -228,7 +223,6 @@
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
 
-/* Submit Button */
 .submitBtn {
   width: 100%;
   height: var(--button-height);
@@ -286,18 +280,13 @@
   }
 }
 
-/* ==========================================
-   Responsive Breakpoint Optimizations
-   ========================================== */
-
-/* Mobile Phones (small to medium, < 480px) */
 @media (max-width: 480px) {
   .authWrapper {
     padding: 20px 16px;
   }
 
   .input {
-    font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+    font-size: 16px;
     height: 46px;
   }
 
@@ -310,7 +299,6 @@
   }
 }
 
-/* Landscape / Short Vertical Height Screens */
 @media (max-height: 600px) and (orientation: landscape) {
   .authWrapper {
     padding: 16px;
@@ -326,7 +314,6 @@
   }
 }
 
-/* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .authContent {
     animation: none;

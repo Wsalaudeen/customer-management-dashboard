@@ -21,17 +21,14 @@ export function useCustomerFilter() {
     const query = normalizeText(searchQuery);
 
     return customers.filter((customer) => {
-      // 1. Status Filter
       if (statusTab !== 'All' && customer.status !== statusTab) {
         return false;
       }
 
-      // 2. Industry Filter
       if (industryFilter !== 'All Industries' && customer.industry !== industryFilter) {
         return false;
       }
 
-      // 3. Search Query Filter (Business Name, Contact Person, Email)
       if (query) {
         const name = normalizeText(customer.businessName);
         const contact = normalizeText(customer.contactPerson);

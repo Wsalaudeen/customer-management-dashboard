@@ -1,9 +1,5 @@
 import styles from '../dashboard/Dashboard.module.css';
 
-/**
- * Skeleton Primitive UI Component
- * Reusable animated shimmer block placeholder for loading states.
- */
 export default function Skeleton({
   width = '100%',
   height = '16px',
@@ -24,10 +20,6 @@ export default function Skeleton({
   );
 }
 
-/**
- * StatCardsGridSkeleton
- * Shimmering loading skeleton cards grid matching StatCardsGrid.
- */
 export function StatCardsGridSkeleton({ count = 4 }) {
   return (
     <div className={styles.statsGrid}>
