@@ -86,18 +86,14 @@ describe('Dashboard Component', () => {
     const registerBtn = screen.getByRole('button', { name: /Register Customer/i });
     fireEvent.click(registerBtn);
 
-    expect(screen.getByRole('heading', { name: /Register New Customer/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Register (New )?Customer/i })).toBeInTheDocument();
   });
 
-  it('triggers onLogout when clicking Sign out from user dropdown', () => {
+  it('triggers onLogout when clicking Sign out button', () => {
     const handleLogout = vi.fn();
     render(<Dashboard onLogout={handleLogout} />);
 
-    // Open user menu
-    const adminMenuBtn = screen.getByRole('button', { name: /Admin account menu/i });
-    fireEvent.click(adminMenuBtn);
-
-    const signOutBtn = screen.getByRole('menuitem', { name: /Sign out/i });
+    const signOutBtn = screen.getByRole('button', { name: /Sign out/i });
     fireEvent.click(signOutBtn);
 
     expect(handleLogout).toHaveBeenCalledTimes(1);

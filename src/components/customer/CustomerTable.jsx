@@ -41,7 +41,7 @@ function ArrowDownIcon({ className }) {
   );
 }
 
-export default function CustomerTable({ customers, sortConfig, onSort, onDeleteCustomer }) {
+export default function CustomerTable({ customers, sortConfig, onSort }) {
   const columns = [
     { key: 'businessName', label: 'Business Name' },
     { key: 'type', label: 'Type' },
@@ -59,7 +59,7 @@ export default function CustomerTable({ customers, sortConfig, onSort, onDeleteC
   return (
     <div className={styles.tableWrapper}>
       <table className={styles.customerTable} aria-label="Business customer records">
-        <caption className="sr-only">List of business customers and management actions</caption>
+        <caption className="sr-only">List of business customers</caption>
         <thead>
           <tr>
             {columns.map((col) => {
@@ -90,9 +90,6 @@ export default function CustomerTable({ customers, sortConfig, onSort, onDeleteC
                 </th>
               );
             })}
-            <th scope="col" style={{ textAlign: 'right' }}>
-              Actions
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -111,9 +108,9 @@ export default function CustomerTable({ customers, sortConfig, onSort, onDeleteC
               <td>
                 <div className={styles.rmCell}>
                   <div className={styles.rmAvatar} aria-hidden="true">
-                    {cust.rm.initials}
+                    {cust.rm?.initials || (cust.rmName ? cust.rmName.substring(0, 2).toUpperCase() : 'AN')}
                   </div>
-                  <span className={styles.rmName}>{cust.rm.name}</span>
+                  <span className={styles.rmName}>{cust.rm?.name || cust.rmName || 'Ada'}</span>
                 </div>
               </td>
               <td>
@@ -131,73 +128,11 @@ export default function CustomerTable({ customers, sortConfig, onSort, onDeleteC
                 </span>
               </td>
               <td>{cust.createdDate}</td>
-              <td>
-                <div className={styles.actionButtons} style={{ justifyContent: 'flex-end' }}>
-                  <button
-                    className={styles.actionBtn}
-                    title="View Details"
-                    type="button"
-                    aria-label={`View details for ${cust.businessName}`}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      aria-hidden="true"
-                    >
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  </button>
-                  <button
-                    className={styles.actionBtn}
-                    title="Edit Customer"
-                    type="button"
-                    aria-label={`Edit ${cust.businessName}`}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      aria-hidden="true"
-                    >
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                    </svg>
-                  </button>
-                  <button
-                    className={`${styles.actionBtn} ${styles.deleteBtn}`}
-                    title="Delete Customer"
-                    type="button"
-                    aria-label={`Delete ${cust.businessName}`}
-                    onClick={() => onDeleteCustomer(cust.id)}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      aria-hidden="true"
-                    >
-                      <polyline points="3 6 5 6 21 6" />
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                    </svg>
-                  </button>
-                </div>
-              </td>
             </tr>
           ))}
           {customers.length === 0 && (
             <tr>
-              <td colSpan="7" style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+              <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
                 No customers match your criteria.
               </td>
             </tr>

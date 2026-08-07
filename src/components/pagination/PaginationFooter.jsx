@@ -11,7 +11,7 @@ export default function PaginationFooter({
   return (
     <nav aria-label="Table pagination" className={styles.paginationFooter}>
       <div className={styles.paginationInfo} aria-live="polite" aria-atomic="true">
-        Showing {totalResults === 0 ? 0 : currentSliceStart + 1}-{currentSliceEnd} of {totalResults}
+        Showing {totalResults === 0 ? 0 : currentSliceStart}-{currentSliceEnd} of {totalResults}
       </div>
 
       <div className={styles.paginationControls} role="group" aria-label="Pagination controls">

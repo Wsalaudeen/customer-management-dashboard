@@ -1,5 +1,5 @@
 import { AUTH_CONFIG } from '../../constants/auth';
-import { useLoginForm } from '../../hooks/useLoginForm';
+import { useLoginForm } from '../../hooks/auth/useLoginForm';
 import BrandHeader from './BrandHeader';
 import DemoCredentialsCallout from './DemoCredentialsCallout';
 import TextField from '../ui/TextField';

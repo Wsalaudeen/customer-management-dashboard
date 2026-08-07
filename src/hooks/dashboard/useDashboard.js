@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { INITIAL_CUSTOMERS } from '../constants/mockCustomers';
+import { INITIAL_CUSTOMERS } from '../../constants/mockCustomers';
 import { useCustomerFilter } from './useCustomerFilter';
 import { useCustomerSort } from './useCustomerSort';
 import { useCustomerPagination } from './useCustomerPagination';
 import { useCustomerMetrics } from './useCustomerMetrics';
-import { useCustomerForm } from './useCustomerForm';
+import { useCustomerForm } from '../modal/useCustomerForm';
 
 /**
  * Main dashboard orchestrator hook.
@@ -42,7 +42,7 @@ export function useDashboard({ initialLoading = false } = {}) {
     setCustomers((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const form = useCustomerForm(handleAddCustomer, handleDeleteCustomer);
+  const form = useCustomerForm(handleAddCustomer, handleDeleteCustomer, customers);
 
   // 4. Data Processing Pipeline
   const filteredCustomers = filter.filterList(customers);
@@ -114,8 +114,14 @@ export function useDashboard({ initialLoading = false } = {}) {
     setIsUserMenuOpen,
     isModalOpen: form.isModalOpen,
     setIsModalOpen: form.setIsModalOpen,
+    closeModal: form.closeModal,
     newCustomer: form.newCustomer,
     setNewCustomer: form.setNewCustomer,
+    successCustomer: form.successCustomer,
+    showSuccessNotification: form.showSuccessNotification,
+    duplicateError: form.duplicateError,
+    registerAnotherCustomer: form.registerAnotherCustomer,
+    dismissNotification: form.dismissNotification,
     handleAddCustomerSubmit: form.handleSubmit,
     handleDeleteCustomer: form.handleDelete,
   };

@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react';
-import { DEMO_CREDENTIALS, AUTH_MESSAGES, AUTH_CONFIG } from '../constants/auth';
+import { DEMO_CREDENTIALS, AUTH_MESSAGES, AUTH_CONFIG } from '../../constants/auth';
 
+/**
+ * Custom hook to manage Login form state, input validation, autofill, and submission.
+ */
 export function useLoginForm(onLoginSuccess) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,43 +19,38 @@ export function useLoginForm(onLoginSuccess) {
     setEmail(DEMO_CREDENTIALS.email);
     setPassword(DEMO_CREDENTIALS.password);
     setError('');
-    setSuccess('');
-    setTimeout(() => {
-      submitBtnRef.current?.focus();
-    }, 0);
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
     setError('');
     setSuccess('');
 
-    if (!email.trim()) {
-      setError(AUTH_MESSAGES.REQUIRED_FIELDS);
-      emailInputRef.current?.focus();
-      return;
-    }
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
 
-    if (!password.trim()) {
+    if (!trimmedEmail || !trimmedPassword) {
       setError(AUTH_MESSAGES.REQUIRED_FIELDS);
-      passwordInputRef.current?.focus();
       return;
     }
 
     setIsLoading(true);
 
     setTimeout(() => {
-      setIsLoading(false);
-      if (email === DEMO_CREDENTIALS.email && password === DEMO_CREDENTIALS.password) {
+      if (trimmedEmail === DEMO_CREDENTIALS.email && trimmedPassword === DEMO_CREDENTIALS.password) {
+        setIsLoading(false);
         setSuccess(AUTH_MESSAGES.SUCCESS);
+
         setTimeout(() => {
           if (onLoginSuccess) {
             onLoginSuccess();
           }
         }, 800);
       } else {
+        setIsLoading(false);
         setError(AUTH_MESSAGES.INVALID_CREDENTIALS);
-        emailInputRef.current?.focus();
       }
     }, AUTH_CONFIG.SIMULATED_DELAY_MS);
   };
@@ -64,6 +62,7 @@ export function useLoginForm(onLoginSuccess) {
     setPassword,
     isLoading,
     error,
+    setError,
     success,
     emailInputRef,
     passwordInputRef,
